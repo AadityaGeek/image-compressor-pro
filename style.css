@@ -1,0 +1,639 @@
+/* CSS Variables */
+:root {
+  /* Colors */
+  --primary-color: #3b82f6;
+  --primary-hover: #2563eb;
+  --background-light: #f8fafc;
+  --background-white: #ffffff;
+  --border-color: #e2e8f0;
+  --text-primary: #4b5563;
+  --text-dark: #1f2937;
+  --error-color: #ef4444;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-default: all 0.3s ease-in-out;
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-full: 999px;
+}
+
+/* Base Styles */
+body {
+  overflow-x: hidden;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+/* Header Styles */
+header {
+  box-shadow: var(--shadow-md);
+  border-bottom: 1px solid var(--border-color);
+}
+
+header a {
+  transition: var(--transition-default);
+  font-weight: 500;
+}
+
+header a:hover {
+  color: var(--primary-color);
+}
+
+#mobileMenu {
+  transition: all 0.3s ease;
+  max-height: 0;
+  overflow: hidden;
+}
+
+#mobileMenu:not(.hidden) {
+  max-height: 200px;
+}
+
+#mobileMenuBtn {
+  transition: var(--transition-default);
+}
+
+#mobileMenuBtn:hover {
+  transform: scale(1.1);
+}
+
+/* Footer Styles */
+footer {
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+  border-top: 1px solid var(--border-color);
+  margin-top: auto;
+}
+
+footer a {
+  transition: var(--transition-default);
+}
+
+footer a:hover {
+  color: var(--primary-color);
+}
+
+footer .social-icon {
+  transition: var(--transition-default);
+}
+
+footer .social-icon:hover {
+  transform: translateY(-2px);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background-light);
+  border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-primary);
+  border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-dark);
+}
+
+/* Common Elements */
+select,
+input[type="text"],
+input[type="number"] {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+  appearance: none;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--border-color);
+  transition: var(--transition-default);
+}
+
+/* Buttons */
+#compressBtn,
+#downloadLink {
+  transition: var(--transition-default);
+  background: var(--primary-color);
+  color: var(--background-white);
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+}
+
+#compressBtn:hover,
+#downloadLink:hover {
+  transform: translateY(-2px);
+  background: var(--primary-hover);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Upload Zone */
+.upload-zone {
+  position: relative;
+  transition: var(--transition-default);
+  border: 2px dashed var(--border-color);
+  background-color: var(--background-light);
+}
+
+.upload-zone.drag-over {
+  border-color: var(--primary-color);
+  background-color: rgba(59, 130, 246, 0.05);
+  transform: scale(1.02);
+}
+
+.upload-icon {
+  transition: var(--transition-default);
+}
+
+.drag-over .upload-icon {
+  transform: scale(1.2);
+  color: var(--primary-color);
+}
+
+/* Image Preview */
+#preview,
+#compressedPreview {
+  transition: var(--transition-default);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: var(--background-light);
+  border: 2px dashed var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#preview:hover,
+#compressedPreview:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Error Message */
+#errorMessage {
+  transition: var(--transition-default);
+  opacity: 1;
+}
+
+#errorMessage.hidden {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+#errorMessage:not(.hidden) {
+  opacity: 1;
+  transform: translateY(0);
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Loading Animation */
+.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(59, 130, 246, 0.2),
+    transparent
+  );
+  animation: loading 1.5s infinite;
+}
+
+/* Animations */
+@keyframes loading {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* File Upload Animation */
+.file-upload-animation {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.2);
+  }
+  70% {
+    box-shadow: 0 0 0 15px rgba(59, 130, 246, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+  }
+}
+
+/* Fancy Select Styling */
+select:hover {
+  border-color: #3b82f6;
+}
+
+/* Button Animations */
+#compressBtn:active,
+#downloadLink:active {
+  transform: translateY(0);
+}
+
+/* Result Section Animation */
+#result {
+  transition: all 0.5s ease-in-out;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+#result.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Image comparison container styles */
+#imageComparisonContainer {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease-in-out;
+}
+
+#imageComparisonContainer:not(.hidden) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Card Hover Effects */
+.bg-white {
+  transition: all 0.3s ease-in-out;
+  border-radius: 12px;
+}
+
+.bg-white:hover {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+  .max-w-4xl {
+    padding: 0 1.5rem;
+  }
+
+  #imageComparisonContainer .grid {
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .max-w-4xl {
+    padding: 1rem;
+    margin: 0;
+    width: 100%;
+  }
+
+  #imageComparisonContainer .grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  #preview,
+  #compressedPreview {
+    max-height: 250px;
+    width: 100%;
+    object-fit: contain;
+  }
+
+  h1.text-4xl {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .bg-white {
+    padding: 1rem !important;
+    margin-bottom: 1rem;
+  }
+
+  /* Improve touch targets */
+  select,
+  input[type="text"],
+  input[type="number"] {
+    height: 48px;
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+
+  #compressBtn,
+  #downloadLink {
+    width: 100%;
+    text-align: center;
+    padding: 0.875rem;
+    font-size: 1rem;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Better spacing for controls */
+  .space-y-4 {
+    margin-bottom: 1.5rem;
+  }
+
+  /* Adjust upload zone for mobile */
+  label[for="imageInput"] {
+    padding: 1rem !important;
+  }
+
+  .zoom-controls {
+    bottom: 8px;
+  }
+
+  #zoomPercentage {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .max-w-4xl {
+    padding: 0.75rem;
+  }
+
+  h1.text-4xl {
+    font-size: 1.5rem;
+  }
+
+  #preview,
+  #compressedPreview {
+    max-height: 200px;
+  }
+
+  .bg-white {
+    padding: 0.75rem !important;
+  }
+
+  /* Stack file size info and download button */
+  #result {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  #fileSizes {
+    text-align: center;
+  }
+}
+
+/* Improve form elements spacing */
+.mb-6 {
+  margin-bottom: 1rem;
+}
+
+/* Ensure proper button touch targets */
+button,
+select,
+input {
+  touch-action: manipulation;
+}
+
+/* Drag and Drop Styles */
+.upload-message {
+  transition: all 0.3s ease;
+}
+
+.drag-over .upload-message {
+  color: #3b82f6;
+}
+
+/* Invalid File Warning */
+.invalid-file-warning {
+  position: absolute;
+  bottom: -40px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #ef4444;
+  font-size: 0.875rem;
+  padding: 0.5rem;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.invalid-file-warning.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Zoom Modal Styles */
+#zoomModal {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+#zoomModal.active {
+  opacity: 1;
+  pointer-events: auto;
+  cursor: grab;
+}
+
+#zoomModal.active.grabbing {
+  cursor: grabbing;
+}
+
+/* Fix the centering issue */
+.zoom-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#zoomImage {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease;
+  transform-origin: center;
+  display: block;
+  margin: 0 auto; /* Center horizontally */
+  max-width: 100%;
+  max-height: 85vh;
+  object-fit: contain;
+}
+
+#closeZoomBtn {
+  opacity: 0.8;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 60;
+}
+
+#closeZoomBtn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Zoom Indicator */
+#zoomPercentage {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 55;
+  transition: opacity 0.3s ease;
+  bottom: 70px; /* Position above the zoom controls */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 1; /* Always visible */
+}
+
+.zoom-controls {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 8px 12px;
+  border-radius: 8px;
+  z-index: 55;
+}
+
+.zoom-btn {
+  background: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.zoom-btn:hover {
+  transform: scale(1.1);
+  background: #f0f0f0;
+}
+
+/* Remove Button */
+#removeImageBtn {
+  transition: all 0.2s ease;
+}
+
+#removeImageBtn:hover {
+  transform: translateY(-1px);
+}
+
+#removeImageBtn:active {
+  transform: translateY(0);
+}
+
+/* Progress Bar Styles */
+#progressContainer {
+  transition: all 0.3s ease;
+}
+
+#progressBar {
+  transition: width 0.3s ease;
+}
+
+/* Responsive styles for progress indicator */
+@media (max-width: 768px) {
+  #progressContainer {
+    padding: 0 0.5rem;
+  }
+
+  #progressDetails {
+    font-size: 10px;
+  }
+}
+
+/* Progress animation for the percentage text */
+#progressPercentage {
+  transition: all 0.2s ease;
+}
+
+/* Progress status pulse effect when active */
+@keyframes pulse-text {
+  0% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+#progressStatus.active {
+  animation: pulse-text 1.5s infinite;
+}
+
+/* Progress details animated dots when active */
+@keyframes dots {
+  0%,
+  20% {
+    content: ".";
+  }
+  40% {
+    content: "..";
+  }
+  60%,
+  100% {
+    content: "...";
+  }
+}
+
+#progressDetails.active::after {
+  content: "";
+  animation: dots 1.5s infinite;
+}

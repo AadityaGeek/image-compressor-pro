@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Image Compressor Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+  <body
+    class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen text-gray-800 flex flex-col"
+  >
+    <!-- Header - Made sticky -->
+    <header class="bg-white shadow-md sticky top-0 z-40">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+          <div class="flex items-center">
+            <i class="fa-solid fa-minimize text-2xl mr-2 text-blue-600"></i>
+            <span class="font-bold text-xl text-gray-800"
+              >Image Compressor Pro</span
+            >
+          </div>
+          <nav class="hidden md:flex space-x-8">
+            <a
+              href="#home"
+              class="text-gray-600 hover:text-blue-600 transition-colors"
+              >Home</a
+            >
+            <a
+              href="#features"
+              class="text-gray-600 hover:text-blue-600 transition-colors"
+              >Features</a
+            >
+            <a
+              href="#how-to-use"
+              class="text-gray-600 hover:text-blue-600 transition-colors"
+              >How to Use</a
+            >
+            <a
+              href="#about"
+              class="text-gray-600 hover:text-blue-600 transition-colors"
+              >About</a
+            >
+          </nav>
+          <div class="md:hidden">
+            <button
+              id="mobileMenuBtn"
+              class="text-gray-600 hover:text-blue-600"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div id="mobileMenu" class="md:hidden hidden py-4">
+          <a
+            href="#home"
+            class="block py-2 text-gray-600 hover:text-blue-600 transition-colors"
+            >Home</a
+          >
+          <a
+            href="#features"
+            class="block py-2 text-gray-600 hover:text-blue-600 transition-colors"
+            >Features</a
+          >
+          <a
+            href="#how-to-use"
+            class="block py-2 text-gray-600 hover:text-blue-600 transition-colors"
+            >How to Use</a
+          >
+          <a
+            href="#about"
+            class="block py-2 text-gray-600 hover:text-blue-600 transition-colors"
+            >About</a
+          >
+        </div>
+      </div>
+    </header>
+
+    <!-- Image Zoom Modal -->
+    <div
+      id="zoomModal"
+      class="fixed inset-0 bg-black bg-opacity-80 z-50 hidden flex items-center justify-center"
+    >
+      <button
+        id="closeZoomBtn"
+        class="absolute top-4 right-4 bg-white rounded-full p-2 hover:bg-gray-200 transition-colors z-60"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+
+      <div class="zoom-container">
+        <div id="zoomPercentage" class="opacity-0">100%</div>
+        <img id="zoomImage" class="max-w-full max-h-[85vh] object-contain" />
+
+        <div class="zoom-controls">
+          <button class="zoom-btn" id="zoomOutBtn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M20 12H4"
+              />
+            </svg>
+          </button>
+          <button class="zoom-btn" id="zoomResetBtn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              />
+            </svg>
+          </button>
+          <button class="zoom-btn" id="zoomInBtn">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <main class="flex-grow">
+      <div class="max-w-4xl mx-auto p-8">
+        <section id="home" class="scroll-mt-20">
+          <h1
+            class="text-4xl font-bold mb-8 text-center text-gray-800 flex items-center justify-center gap-3"
+          >
+            <i class="fa-solid fa-minimize text-blue-600"></i> Image Compressor
+            Pro
+          </h1>
+
+          <!-- Upload Section -->
+          <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Upload Image</label
+              >
+              <div class="flex items-center justify-center w-full">
+                <label
+                  for="imageInput"
+                  class="upload-zone w-full flex flex-col items-center px-4 py-6 rounded-lg cursor-pointer hover:bg-gray-50"
+                >
+                  <svg
+                    class="upload-icon w-8 h-8 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    />
+                  </svg>
+                  <div class="upload-message mt-2 text-center">
+                    <span class="text-sm text-gray-600"
+                      >Drag and drop your image here, or click to select</span
+                    >
+                    <span class="block text-xs text-gray-500 mt-1"
+                      >Supports: JPG, PNG, WebP (Max 10MB)</span
+                    >
+                  </div>
+                  <input
+                    type="file"
+                    id="imageInput"
+                    accept="image/*"
+                    class="hidden"
+                  />
+                  <div class="invalid-file-warning"></div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Image Comparison Section -->
+        <div
+          id="imageComparisonContainer"
+          class="hidden bg-white rounded-xl shadow-lg p-8 mb-6"
+        >
+          <div class="flex justify-end mb-2">
+            <button
+              id="removeImageBtn"
+              class="text-sm flex items-center gap-1 text-red-600 hover:text-red-700 transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
+              Remove Image
+            </button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Original Image Section -->
+            <div class="space-y-4">
+              <h2
+                class="text-xl font-bold text-gray-800 flex items-center gap-2"
+              >
+                <i class="fas fa-image"></i> Original Image
+              </h2>
+              <div class="relative">
+                <img
+                  id="preview"
+                  class="w-full rounded-lg shadow-sm object-contain max-h-[300px]"
+                />
+              </div>
+              <div class="text-sm text-gray-600">
+                <p id="originalSize"></p>
+                <p id="originalDimensions"></p>
+              </div>
+            </div>
+
+            <!-- Compressed Image Section -->
+            <div id="result" class="space-y-4">
+              <h2
+                class="text-xl font-bold text-gray-800 flex items-center gap-2"
+              >
+                <i class="fa-solid fa-minimize"></i> Compressed Result
+              </h2>
+              <div class="relative">
+                <img
+                  id="compressedPreview"
+                  class="w-full rounded-lg shadow-sm object-contain max-h-[300px]"
+                />
+                <button
+                  id="zoomBtn"
+                  class="absolute bottom-3 right-3 bg-white rounded-full p-2 hover:bg-gray-100 transition-colors shadow-md"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-5 w-5 text-gray-700"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <p id="fileSizes" class="text-sm text-gray-600"></p>
+              <a
+                id="downloadLink"
+                class="inline-flex items-center px-4 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:ring-4 focus:ring-green-300 transition-colors"
+                download="compressed.jpg"
+              >
+                <svg
+                  class="w-4 h-4 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  />
+                </svg>
+                Download Compressed Image
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Compression Controls Section -->
+        <div class="bg-white rounded-xl shadow-lg p-8 mb-12">
+          <!-- Mode Selection -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Compression Mode</label
+            >
+            <select
+              id="mode"
+              class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            >
+              <option value="quick">Quick Compress</option>
+              <option value="size">File Size Mode</option>
+              <option value="manual">Manual Mode</option>
+            </select>
+          </div>
+
+          <!-- Quick Compress -->
+          <div id="quickMode" class="mode space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Compression Level</label
+              >
+              <select
+                id="quickLevel"
+                class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="0.8">Low Compression (High Quality)</option>
+                <option value="0.6">Medium Compression</option>
+                <option value="0.3">High Compression (Low Quality)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- File Size Mode -->
+          <div id="sizeMode" class="mode hidden space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Target File Size</label
+              >
+              <select
+                id="sizeTarget"
+                class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="50">50 kB</option>
+                <option value="100" selected>100 kB</option>
+                <option value="200">200 kB</option>
+                <option value="500">500 kB</option>
+                <option value="custom">Custom</option>
+              </select>
+              <input
+                type="number"
+                id="customSize"
+                placeholder="Enter size in kB"
+                class="mt-2 w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 hidden"
+              />
+              <div
+                class="mt-3 p-3 rounded-lg bg-blue-50 border border-blue-200 flex items-start"
+              >
+                <i class="fas fa-info-circle text-blue-500 mt-0.5 mr-2"></i>
+                <p class="text-sm text-blue-700">
+                  Note: Depending on image complexity and dimensions, certain
+                  large images may not compress to the specified target size
+                  while maintaining acceptable quality. In such cases, the
+                  closest achievable compression will be applied.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Manual Mode -->
+          <div id="manualMode" class="mode hidden space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2"
+                >Max Resolution</label
+              >
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm text-gray-600 mb-1"
+                    >Width (px)</label
+                  >
+                  <input
+                    type="number"
+                    id="manualWidth"
+                    placeholder="Original width"
+                    class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+                <div>
+                  <label class="block text-sm text-gray-600 mb-1"
+                    >Height (px)</label
+                  >
+                  <input
+                    type="number"
+                    id="manualHeight"
+                    placeholder="Original height"
+                    class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+              </div>
+              <p class="text-xs text-gray-500 mt-1">
+                Leave empty to maintain original dimensions
+              </p>
+            </div>
+          </div>
+
+          <!-- Progress Indicator -->
+          <div id="progressContainer" class="hidden mt-4 mb-4">
+            <div class="flex justify-between mb-1">
+              <span
+                id="progressStatus"
+                class="text-sm font-medium text-blue-700"
+                >Processing...</span
+              >
+              <span
+                id="progressPercentage"
+                class="text-sm font-medium text-blue-700"
+                >0%</span
+              >
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2.5">
+              <div
+                id="progressBar"
+                class="bg-blue-600 h-2.5 rounded-full"
+                style="width: 0%"
+              ></div>
+            </div>
+            <div id="progressDetails" class="mt-1 text-xs text-gray-500">
+              Initializing compression...
+            </div>
+          </div>
+
+          <!-- Add this before the compress button -->
+          <div
+            id="errorMessage"
+            class="hidden mb-4 p-4 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm"
+          ></div>
+
+          <button
+            id="compressBtn"
+            class="w-full mt-8 px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition-colors"
+          >
+            Compress Image
+          </button>
+        </div>
+
+        <!-- Additional sections with content that matches the navigation -->
+        <section id="features" class="scroll-mt-20 mb-12">
+          <h2 class="text-3xl font-bold mb-6 text-gray-800">Features</h2>
+          <div class="bg-white rounded-xl shadow-lg p-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="p-4">
+                <div class="flex items-center mb-3">
+                  <i class="fas fa-bolt text-xl mr-3 text-blue-600"></i>
+                  <h3 class="text-xl font-semibold">Fast Compression</h3>
+                </div>
+                <p class="text-gray-600">
+                  Quickly compress your images in seconds, right in your browser
+                  with no waiting.
+                </p>
+              </div>
+              <div class="p-4">
+                <div class="flex items-center mb-3">
+                  <i class="fas fa-lock text-xl mr-3 text-blue-600"></i>
+                  <h3 class="text-xl font-semibold">Privacy First</h3>
+                </div>
+                <p class="text-gray-600">
+                  Your images never leave your device. All processing happens
+                  locally in your browser.
+                </p>
+              </div>
+              <div class="p-4">
+                <div class="flex items-center mb-3">
+                  <i class="fas fa-sliders text-xl mr-3 text-blue-600"></i>
+                  <h3 class="text-xl font-semibold">Multiple Modes</h3>
+                </div>
+                <p class="text-gray-600">
+                  Choose from quick compress, file size targeting, or manual
+                  resolution control.
+                </p>
+              </div>
+              <div class="p-4">
+                <div class="flex items-center mb-3">
+                  <i class="fas fa-mobile-alt text-xl mr-3 text-blue-600"></i>
+                  <h3 class="text-xl font-semibold">Mobile Friendly</h3>
+                </div>
+                <p class="text-gray-600">
+                  Use our tool on any device - desktop, tablet, or mobile phone.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="how-to-use" class="scroll-mt-20 mb-12">
+          <h2 class="text-3xl font-bold mb-6 text-gray-800">How to Use</h2>
+          <div class="bg-white rounded-xl shadow-lg p-8">
+            <ol class="space-y-6">
+              <li class="flex">
+                <span
+                  class="flex-shrink-0 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 h-8 w-8 mr-3"
+                  >1</span
+                >
+                <div>
+                  <h3 class="font-semibold text-lg mb-1">Upload Your Image</h3>
+                  <p class="text-gray-600">
+                    Drag and drop an image file or click to select from your
+                    device.
+                  </p>
+                </div>
+              </li>
+              <li class="flex">
+                <span
+                  class="flex-shrink-0 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 h-8 w-8 mr-3"
+                  >2</span
+                >
+                <div>
+                  <h3 class="font-semibold text-lg mb-1">
+                    Choose Compression Settings
+                  </h3>
+                  <p class="text-gray-600">
+                    Select your preferred compression mode and adjust the
+                    settings.
+                  </p>
+                </div>
+              </li>
+              <li class="flex">
+                <span
+                  class="flex-shrink-0 flex items-center justify-center rounded-full bg-blue-100 text-blue-600 h-8 w-8 mr-3"
+                  >3</span
+                >
+                <div>
+                  <h3 class="font-semibold text-lg mb-1">
+                    Compress and Download
+                  </h3>
+                  <p class="text-gray-600">
+                    Click the compress button and download your optimized image.
+                  </p>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </section>
+
+        <section id="about" class="scroll-mt-20 mb-12">
+          <h2 class="text-3xl font-bold mb-6 text-gray-800">
+            About Image Compressor Pro
+          </h2>
+          <div class="bg-white rounded-xl shadow-lg p-8">
+            <div class="space-y-6">
+              <div>
+                <h3 class="text-xl font-semibold mb-3 text-gray-800">
+                  Professional Image Optimization Tool
+                </h3>
+                <p class="text-gray-600 mb-4">
+                  Image Compressor Pro is a powerful, free online tool designed
+                  to help you compress images to any desired size - whether you
+                  need to compress images under 50KB for messaging apps, under
+                  100KB for web optimization, or under 200KB for email
+                  attachments. Our advanced compression technology intelligently
+                  reduces file sizes while maintaining optimal visual quality,
+                  making your images web-ready without compromising their
+                  appearance.
+                </p>
+              </div>
+
+              <div>
+                <h3 class="text-xl font-semibold mb-3 text-gray-800">
+                  Precise Size Control
+                </h3>
+                <p class="text-gray-600 mb-4">
+                  Need specific file sizes? Our tool lets you:
+                </p>
+                <ul class="list-disc pl-6 space-y-2 text-gray-600">
+                  <li>
+                    Compress images to under 50KB for WhatsApp and other
+                    messaging platforms
+                  </li>
+                  <li>
+                    Reduce file size to under 100KB for optimal web performance
+                  </li>
+                  <li>Compress to under 200KB for email attachments</li>
+                  <li>
+                    Customize target size from 20KB to 1MB based on your needs
+                  </li>
+                  <li>
+                    Maintain quality while reducing file size by up to 80%
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 class="text-xl font-semibold mb-3 text-gray-800">
+                  Common Compression Targets
+                </h3>
+                <div class="grid md:grid-cols-2 gap-4 text-gray-600">
+                  <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="font-semibold mb-2">
+                      Social Media Optimization
+                    </h4>
+                    <ul class="space-y-1 text-sm">
+                      <li>• WhatsApp images (under 50KB)</li>
+                      <li>• Facebook cover photos (under 100KB)</li>
+                      <li>• Instagram posts (under 1MB)</li>
+                      <li>• Twitter profile pictures (under 50KB)</li>
+                    </ul>
+                  </div>
+                  <div class="bg-gray-50 p-4 rounded-lg">
+                    <h4 class="font-semibold mb-2">Web Optimization</h4>
+                    <ul class="space-y-1 text-sm">
+                      <li>• Thumbnail images (under 20KB)</li>
+                      <li>• Banner images (under 50KB)</li>
+                      <li>• Product photos (under 100KB)</li>
+                      <li>• Background images (under 200KB)</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 class="text-xl font-semibold mb-3 text-gray-800">
+                  Why Choose Image Compressor Pro?
+                </h3>
+                <p class="text-gray-600 mb-4">
+                  Unlike other online image compression tools, we prioritize
+                  both efficiency and privacy. Our browser-based compression
+                  ensures your images never leave your device, providing a
+                  secure solution for photographers, web developers, and content
+                  creators. With support for popular formats like JPG, PNG, and
+                  WebP, you can optimize any image for your specific needs.
+                </p>
+              </div>
+
+              <div>
+                <h3 class="text-xl font-semibold mb-3 text-gray-800">
+                  Perfect for Every Use Case
+                </h3>
+                <ul class="list-disc pl-6 space-y-2 text-gray-600">
+                  <li>
+                    <strong>Web Developers:</strong> Compress images under 100KB
+                    for faster page loads and better Core Web Vitals scores
+                  </li>
+                  <li>
+                    <strong>Digital Photographers:</strong> Reduce
+                    high-resolution photos to web-friendly sizes while
+                    preserving quality
+                  </li>
+                  <li>
+                    <strong>E-commerce Owners:</strong> Optimize product images
+                    under 50KB for faster mobile shopping experience
+                  </li>
+                  <li>
+                    <strong>Content Creators:</strong> Compress images to exact
+                    platform requirements (20KB - 1MB)
+                  </li>
+                  <li>
+                    <strong>Social Media Managers:</strong> Batch compress
+                    images to platform-specific size limits
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h3 class="text-xl font-semibold mb-3 text-gray-800">
+                  Size-Specific Features
+                </h3>
+                <div class="grid md:grid-cols-2 gap-4 text-gray-600">
+                  <div>
+                    <p class="mb-2"><strong>✓ Precise Size Control</strong></p>
+                    <p>
+                      Target specific file sizes from 20KB to 1MB with our
+                      advanced compression algorithm.
+                    </p>
+                  </div>
+                  <div>
+                    <p class="mb-2"><strong>✓ Smart Compression</strong></p>
+                    <p>
+                      Automatically adjusts quality to meet size requirements
+                      while maintaining visual clarity.
+                    </p>
+                  </div>
+                  <div>
+                    <p class="mb-2"><strong>✓ Size Presets</strong></p>
+                    <p>
+                      Quick compression presets for common size targets (50KB,
+                      100KB, 200KB, etc.).
+                    </p>
+                  </div>
+                  <div>
+                    <p class="mb-2"><strong>✓ Format Support</strong></p>
+                    <p>
+                      Full support for JPG, PNG, and WebP image formats with
+                      optimal compression.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <h3 class="text-xl font-semibold mb-3 text-gray-800">
+                  Technical Specifications
+                </h3>
+                <ul class="list-disc pl-6 space-y-2 text-gray-600">
+                  <li>Supports JPG, PNG, and WebP image formats</li>
+                  <li>Compression targets from 20KB to 10MB</li>
+                  <li>Size reduction up to 80% while maintaining quality</li>
+                  <li>Precise file size control within 5% of target</li>
+                  <li>Compatible with all modern web browsers</li>
+                </ul>
+              </div>
+
+              <div class="bg-blue-50 p-6 rounded-lg">
+                <h3 class="text-xl font-semibold mb-3 text-blue-800">
+                  Start Compressing Images to Your Exact Size Needs
+                </h3>
+                <p class="text-blue-700">
+                  Whether you need to compress images under 50KB for messaging
+                  apps, under 100KB for web optimization, or to any custom size,
+                  Image Compressor Pro provides the perfect solution. Try our
+                  free tool today and experience the perfect balance of
+                  compression and quality for your specific needs.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow-md-up mt-8">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="py-8 md:flex md:items-start md:justify-between">
+          <div class="text-center md:text-left mb-8 md:mb-0 md:w-1/3">
+            <div class="flex items-center justify-center md:justify-start">
+              <i class="fa-solid fa-minimize text-xl mr-2 text-blue-600"></i>
+              <span class="font-bold text-gray-800">Image Compressor Pro</span>
+            </div>
+            <p class="text-sm text-gray-600 mt-2">
+              Optimize your images with our free compression tool
+            </p>
+          </div>
+          <div
+            class="flex flex-col sm:flex-row justify-center md:justify-end space-y-8 sm:space-y-0 sm:space-x-12 md:w-2/3"
+          >
+          <!---
+            <div class="text-center sm:text-left">
+              <h3
+                class="text-sm font-semibold text-gray-700 tracking-wider uppercase mb-4"
+              >
+                Resources
+              </h3>
+              <ul class="space-y-3">
+                <li>
+                  <a
+                    href="#"
+                    class="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                    >Documentation</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                    >Privacy Policy</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="#"
+                    class="text-sm text-gray-600 hover:text-blue-600 transition-colors"
+                    >Terms of Service</a
+                  >
+                </li>
+              </ul>
+            </div>
+            -->
+            <div class="text-center sm:text-left">
+              <h3
+                class="text-sm font-semibold text-gray-700 tracking-wider uppercase mb-4"
+              >
+                Connect
+              </h3>
+              <div class="flex space-x-4 justify-center sm:justify-start">
+                <a
+                  href="https://www.linkedin.com/in/aadityakr/" target="_blank"
+                  class="text-gray-500 hover:text-blue-600 transition-colors social-icon"
+                >
+                  <i class="fab fa-linkedin text-xl"></i>
+                </a>
+                <a
+                  href="mailto:work.aadityakumar@gmail.com" target="_blank"
+                  class="text-gray-500 hover:text-blue-600 transition-colors social-icon"
+                >
+                  <i class="fa fa-envelope text-xl"></i>
+                </a>
+                <a
+                  href="https://github.com/AadityaGeek/" target="_blank"
+                  class="text-gray-500 hover:text-blue-600 transition-colors social-icon"
+                >
+                  <i class="fab fa-github text-xl"></i>
+                </a>
+                <a
+                  href="https://aadityageek.github.io/" target="_blank"
+                  class="text-gray-500 hover:text-blue-600 transition-colors social-icon"
+                >
+                  <i class="fa fa-globe text-xl"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-gray-200 py-4">
+          <p class="text-sm text-center text-gray-500" id="copyright"></p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+      // Mobile menu toggle
+      const mobileMenu = document.getElementById("mobileMenu");
+      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+
+      function toggleMobileMenu() {
+        mobileMenu.classList.toggle("hidden");
+      }
+
+      function closeMobileMenu() {
+        mobileMenu.classList.add("hidden");
+      }
+
+      // Mobile menu button click handler
+      mobileMenuBtn.addEventListener("click", toggleMobileMenu);
+
+      // Handle mobile menu link clicks
+      mobileMenu.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute("href");
+          const target = document.querySelector(targetId);
+
+          // Close mobile menu
+          closeMobileMenu();
+
+          // Scroll to target section
+          if (target) {
+            window.scrollTo({
+              top: target.offsetTop - 70, // Adjust for header height
+              behavior: "smooth",
+            });
+          }
+        });
+      });
+
+      // Dynamic copyright year
+      document.getElementById(
+        "copyright"
+      ).textContent = `© ${new Date().getFullYear()} Image Compressor Pro. All rights reserved.`;
+
+      // Smooth scroll for non-mobile menu anchor links
+      document
+        .querySelectorAll('nav.hidden.md\\:flex a[href^="#"]')
+        .forEach((anchor) => {
+          anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute("href"));
+            if (target) {
+              window.scrollTo({
+                top: target.offsetTop - 70,
+                behavior: "smooth",
+              });
+            }
+          });
+        });
+
+      // Close mobile menu when clicking outside
+      document.addEventListener("click", function (e) {
+        const isMenuButton = e.target.closest("#mobileMenuBtn");
+        const isMenuLink = e.target.closest("#mobileMenu a");
+        const isMenu = e.target.closest("#mobileMenu");
+
+        if (
+          !isMenuButton &&
+          !isMenuLink &&
+          !isMenu &&
+          !mobileMenu.classList.contains("hidden")
+        ) {
+          closeMobileMenu();
+        }
+      });
+
+      // Close mobile menu on window resize (if switching to desktop view)
+      window.addEventListener("resize", function () {
+        if (window.innerWidth >= 768) {
+          // 768px is the md breakpoint in Tailwind
+          closeMobileMenu();
+        }
+      });
+    </script>
+  </body>
+</html>
